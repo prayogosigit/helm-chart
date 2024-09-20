@@ -1,2 +1,13 @@
-helm repo index ./ --url https://prayogosigit.github.io/helm-chart/
-
+apiVersion: v1
+entries:
+  my-flask-app:
+  - apiVersion: v2
+    appVersion: "1.0"
+    created: "2024-09-21T03:39:31.865852+07:00"
+    description: A Helm chart for my Flask app
+    digest: 827312fa9398b1dfab261f4fd940e0ff773bea720905d8eb7ecb51709a390cd7
+    name: my-flask-app
+    urls:
+    - https://prayogosigit.github.io/helm-chart/docs/my-flask-app-0.1.0.tgz
+    version: 0.1.0
+generated: "2024-09-21T03:39:31.86513+07:00"
