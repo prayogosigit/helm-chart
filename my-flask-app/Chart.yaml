@@ -1,0 +1,6 @@
+apiVersion: v2       # Versi API Helm yang digunakan
+name: my-flask-app   # Nama chart, field 'name' harus ada dan valid
+description: A Helm chart for my Flask app
+version: 0.1.0       # Versi chart Anda
+appVersion: "1.0"    # Versi aplikasi yang akan Anda deploy
+

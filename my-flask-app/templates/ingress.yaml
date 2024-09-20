@@ -1,0 +1,26 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-{{ include "my-flask-app.fullname" . }}
+  namespace: {{ .Release.Namespace }}
+  annotations:
+    acme.cert-manager.io/http01-edit-in-place: "true"
+    cert-manager.io/cluster-issuer: letsencrypt-production
+    cert-manager.io/acme-challenge-type: http01
+spec:
+  ingressClassName: nginx  # Ingress menggunakan NGINX sebagai controller
+  tls:
+    - hosts:
+        - "test.idnseries.my.id"  # Domain yang dilindungi dengan TLS
+      secretName: test-my-flask-app  # Secret yang menyimpan sertifikat TLS
+  rules:
+  - host: "test.idnseries.my.id"  # Host yang didefinisikan untuk aturan ini
+    http:
+      paths:
+        - path: /
+          pathType: Prefix
+          backend:
+            service:
+              name: {{ include "my-flask-app.fullname" . }}  # Nama Service, mengikuti format fullname
+              port:
+                number: 5000  # Port Service yang digunakan
