@@ -1,2 +1,2 @@
-helm repo index . --url https://prayogosigit.github.io/helm-charts/
+helm repo index . --url https://prayogosigit.github.io/helm-chart/
 
