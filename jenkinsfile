@@ -1,0 +1,40 @@
+pipeline {
+    agent any
+    environment {
+        DOCKER_HUB_CREDENTIALS = credentials('dockerhub-credentials') // Store DockerHub credentials in Jenkins
+        DOCKER_IMAGE = 'sigit26/my-flask-app:latest' // Change this to your Docker image name
+    }
+    stages {
+        stage('Build and Push Docker Image') {
+            steps {
+                script {
+                    // Build Docker image
+                    sh "docker build -t ${DOCKER_IMAGE} ."
+                    
+                    // Login to DockerHub
+                    sh "echo ${DOCKER_HUB_CREDENTIALS_PSW} | docker login -u ${DOCKER_HUB_CREDENTIALS_USR} --password-stdin"
+                    
+                    // Push Docker image
+                    sh "docker push ${DOCKER_IMAGE}"
+                }
+            }
+        }
+        stage('Deploy to Kubernetes') {
+            steps {
+                script {
+                    // Add Helm repo and update dependencies
+                    sh 'helm repo add my-helm-repo https://prayogosigit.github.io/helm-chart/'
+                    sh 'helm repo update'
+                    
+                    // Upgrade the Helm release
+                    sh """
+                    helm upgrade --install my-flask-app my-helm-repo/my-flask-app \\
+                        --set image.repository=${DOCKER_IMAGE} \\
+                        --namespace test-sigit --create-namespace
+                    """
+                }
+            }
+        }
+    }
+}
+
